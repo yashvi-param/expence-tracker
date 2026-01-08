@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 
 export const localbox = createContext({
-  add: () => {},
+  add: () => { },
   list: [],
-  updateData: () => {},
-  deleteData: () => {},
-  eidtValue: null,
-  balance: 0,
-  credit: 0,
-  debit: 0,
+  updateData: () => { },
+  deleteData: () => { },
+  editValue: null,  
+  // balance: 0,
+  // credit: 0,
+  // debit: 0,
 });
 
 const LocalContainer = ({ children }) => {
@@ -23,28 +23,28 @@ const LocalContainer = ({ children }) => {
     },
   ];
 
-  const [data, setData] = () => {
+  const [data, setData] = useState(() => {
     const saved = localStorage.getItem("localBox");
 
     return saved ? JSON.parse(saved) : initialState;
-  };
+  })
 
-  const [eidtValue, setEditValue] = useState(null);
+  const [editValue, setEditValue] = useState(null);
 
   const add = (input) => {
     if (!input.title || !input.amount || !input.category || !input.type) {
       alert("please fill all the data required");
-    } else if (eidtValue) {
+    } else if (editValue) {
       setData((prev) =>
         prev.map((d) =>
-          d.id === eidtValue.id
+          d.id === editValue.id
             ? {
-                ...d,
-                title: input.title,
-                amount: input.amount,
-                type: input.type,
-                category: input.category,
-              }
+              ...d,
+              title: input.title,
+              amount: input.amount,
+              type: input.type,
+              category: input.category,
+            }
             : d
         )
       );
@@ -65,7 +65,7 @@ const LocalContainer = ({ children }) => {
   }, [data]);
 
   const updateData = (id) => {
-    const updateVal = data.find((d) => d.id == id);
+    const updateVal = data.find((d) => d.id === id);
 
     setEditValue(updateVal);
   };
@@ -80,11 +80,11 @@ const LocalContainer = ({ children }) => {
     add,
     list: data,
     updateData,
-    eidtValue,
+    editValue,
     deleteData,
-    credit,
-    debit,
-    balance,
+    // credit,
+    // debit,
+    // balance,
   };
 
   return <localbox.Provider value={value}> {children} </localbox.Provider>;

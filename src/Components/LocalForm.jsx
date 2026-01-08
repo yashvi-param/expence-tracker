@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { localbox } from "./LocalContainer";
 
 import Container from "react-bootstrap/Container";
@@ -10,7 +10,11 @@ import Card from "react-bootstrap/Card";
 
 
 const LocalForm = () => {
-  const { add } = useContext(localbox);
+  const { add, editValue } = useContext(localbox);
+
+  useEffect(() => {
+    editValue ? setInput(editValue) : "";
+  }, [editValue]);
 
   const [input, setInput] = useState({
     title: "",
@@ -30,6 +34,8 @@ const LocalForm = () => {
     e.preventDefault();
     add(input);
     setInput({ title: "", amount: "", type: "", category: "" });
+    // console.log(input);
+    
   };
 
   return (
